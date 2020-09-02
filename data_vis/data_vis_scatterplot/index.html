@@ -1,0 +1,1172 @@
+
+<!-- Code from d3-graph-gallery.com -->
+<!DOCTYPE html>
+<meta charset="utf-8">
+
+<style>
+
+	.axis path,
+	.axis line {
+		fill: none;
+		stroke: #000;
+		shape-rendering: crispEdges;
+	}
+
+
+
+	.x.axis path {
+		display: none;
+	}
+
+	.line {
+	    fill: none;
+	    stroke: steelblue;
+	    stroke-width: 2px;
+	  }
+
+	.grid_line {
+	    stroke: lightgrey;
+	    stroke-opacity: 0.7;
+	    shape-rendering: crispEdges;
+	  }
+	
+	.grid_path {
+		stroke-width: 0;
+	  }
+
+	.legend rect {
+		fill:white;
+	    stroke:black;
+	    opacity:0.8;}
+
+    .graphTable td {
+    	vertical-align: top;
+
+    }
+
+	table {
+		width: 75%;
+
+	}
+
+	.myCircle: hover {
+		stroke: black;
+	}
+
+	.objecttable td, th {
+		padding: 8px;
+		border: 1px solid #ddd;
+	}
+
+	.objecttable {
+		font-family: "Arial";
+		font-size: 12px;
+		border-collapse: collapse;
+		width: 75%;
+		margin-left: auto;
+		margin-right: 1;
+	}
+
+	.objecttable tr:nth-child(even) {
+		background-color: #f2f2f2;
+	}
+
+	.objecttable th {
+	  padding-top: 12px;
+	  padding-bottom: 12px;
+	  text-align: left;
+	  background-color: gray;
+	  color: white;
+	  font-size: 14px;
+	}
+
+
+
+</style>
+
+<!-- Load d3.js -->
+
+<h2 style="font-family:Arial;">Was it better to live in Yellowstone, Gallatin or Missoula County in Montana between 2003 and 2018?</h2>
+<h4 style="font-family:Arial;">Hypothesis: The best county to reside at in Montana, will be directly related to the county with the largest population and highest wages.</h4>
+
+<table>
+  <tr>
+    <td>
+    	<div id="main_viz"></div>
+      <div></div>
+	</td>
+    <td>
+    	<div id="bar_chart"></div>
+    	<table class="objecttable">
+    		<tr><th>County</th><th>Population Estimate 2018</th></tr>
+    		<tr><td>Yellowstone</td><td>161,300</td></tr>
+			<tr><td>Missoula</td><td>119,600</td></tr>
+    		<tr><td>Gallatin</td><td>114,434</td></tr>
+    	</table>
+    </td>
+
+  </tr>
+</table>
+<table >
+   <col width="200"> 
+        <col width="200"> 
+            <col width="200"> 
+
+  <tr>
+  	<td>
+    	 <div id="yellowstone"></div>
+       <div></div>
+	</td>
+	<td>
+		 <div id="missoula"></div>
+      <div></div>
+	</td>
+	<td>
+    	<div id="gallatin"></div>
+      <div></div>
+    </td>
+
+</tr>
+
+  	
+</table>
+
+<table style="width:100%">
+  <tr>
+    <td>
+
+<p style="font-size:10px">Average Annual Wage: State and County Wages for Yellowstone, Gallatin and Missoula County in Montana retrieved from U.S. BUREAU OF LABOR STATISTICS, <a href="https://data.bls.gov/cgi-bin/dbdown/en">https://data.bls.gov/cgi-bin/dbdown/en</a>, on August 31, 2020.</p>
+<p style="font-size:10px">Yellowstone, Missoula and Gallatin County Annual Pay and Number of Employees Yearly Percentage Change: State and County Annual Wage Percentage Change and Average Number of Employees Percentage Change for Yellowstone, Gallatin and Missoula County in Montana retrieved from U.S. BUREAU OF LABOR STATISTICS, <a href="https://data.bls.gov/cgi-bin/dbdown/en">https://data.bls.gov/cgi-bin/dbdown/en</a>, on August 31, 2020.</p>
+<p style="font-size:10px">Rent and Wage Bar Chart: Fair Market Rental Prices for 3-Bedroom Apartment in 2018 retrieved from Accurate Rental Price Data, Rent Data, <a href="https://www.rentdata.org/states/montana/2018">https://www.rentdata.org/states/montana/2018</a>, on August 31, 2020.</p>
+<p style="font-size:10px">Montana County Population Data: Montana 2018 Population estimates retrieved from US Census Bureau, <a href="https://www.census.gov/data/datasets/time-series/demo/popest/2010s-counties-total.html#par_textimage_739801612">https://www.census.gov/data/datasets/time-series/demo/popest/2010s-counties-total.html#par_textimage_739801612</a>, on August 31, 2020.</p>
+</td>
+</tr>
+</table>
+
+
+
+
+<script src="https://d3js.org/d3.v4.js"></script>
+
+<script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+
+
+<script>
+
+// set the dimensions and margins of the graph
+var margin = {top: 10, right: 100, bottom: 30, left: 60},
+    width = 700 - margin.left - margin.right,
+    height = 450 - margin.top - margin.bottom;
+
+
+var margin_changes = {top: 30, right: 100, bottom: 30, left: 35},
+    width_changes = 450 - margin_changes.left - margin_changes.right,
+    height_changes = 200 - margin_changes.top - margin_changes.bottom;
+
+var margin_bar = {top: 10, right: 0, bottom: 20, left: 30},
+    width_bar = 600 - margin_bar.left - margin_bar.right,
+    height_bar = 300 - margin_bar.top - margin_bar.bottom;
+
+
+
+
+// append the svg object to the body of the page
+var svg1 = d3.select("#main_viz")
+  .append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+  .append("g")
+    .attr("transform",
+          "translate(" + margin.left + "," + margin.top + ")");
+
+var svgY = d3.select("#yellowstone")
+  .append("svg")
+    .attr("width", width_changes + margin_changes.left + margin_changes.right)
+    .attr("height", height_changes + margin_changes.top + margin_changes.bottom)
+  .append("g")
+    .attr("transform",
+          "translate(" + margin_changes.left + "," + margin_changes.top + ")");
+
+var svgG = d3.select("#gallatin")
+  .append("svg")
+    .attr("width", width_changes + margin_changes.left + margin_changes.right)
+    .attr("height", height_changes + margin_changes.top + margin_changes.bottom)
+  .append("g")
+    .attr("transform",
+          "translate(" + margin_changes.left + "," + margin_changes.top + ")");
+
+var svgM = d3.select("#missoula")
+  .append("svg")
+    .attr("width", width_changes + margin_changes.left + margin_changes.right)
+    .attr("height", height_changes + margin_changes.top + margin_changes.bottom)
+  .append("g")
+    .attr("transform",
+          "translate(" + margin_changes.left + "," + margin_changes.top + ")");
+
+var svgBar = d3.select("#bar_chart")
+  .append("svg")
+    .attr("width", width_bar + margin_bar.left + margin_bar.right)
+    .attr("height", height_bar + margin_bar.top + margin_bar.bottom)
+  .append("g")
+    .attr("transform",
+          "translate(" + margin_bar.left + "," + margin_bar.top + ")");
+
+
+
+// Add the grey background that makes ggplot2 famous
+svg1
+  .append("rect")
+    .attr("x",0)
+    .attr("y",0)
+    .attr("height", height)
+    .attr("width", width)
+    .style("fill", "EBEBEB")
+
+
+
+
+//Read the data
+d3.csv("https://raw.githubusercontent.com/hannahjordanUM/Data_Vis_Repo/master/salary_data.csv", function(data) {
+
+
+    // List of groups (here I have one group per column)
+    var allGroup = ["Yellowstone", "Gallatin","MT Average","Missoula"]
+
+    // Reformat the data: we need an array of arrays of {x, y} tuples
+    var dataReady = allGroup.map( function(grpName) { // .map allows to do something for each element of the list
+      return {
+        name: grpName,
+        values: data.map(function(d) {
+          return {Year: d3.timeParse("%Y-%m-%d")(d.Year), value: +d[grpName]};
+        })
+      };
+    });
+    // I strongly advise to have a look to dataReady with
+    // console.log(dataReady)
+
+    // A color scale: one color for each group
+    var myColor = d3.scaleOrdinal()
+      .domain(allGroup)
+      //.range(d3.schemeDark2);
+      .range(d3.schemeCategory10);
+
+    // Add X axis --> it is a date format
+    var x = d3.scaleTime()
+      .domain([new Date("2003-01-01"), new Date("2018-01-01")])
+      .range([ 0, width ]);
+
+
+
+    svg1.append("g")
+      .attr("transform", "translate(0," + height + ")")
+      .call(d3.axisBottom(x).tickSize(-height).ticks(10))
+      .select(".domain").remove()
+    // Add Y axis
+    var y = d3.scaleLinear()
+      .domain( [25000,50000])
+      .range([ height, 0 ]);
+    svg1.append("g")
+      .call(d3.axisLeft(y).tickSize(-width).ticks(7).tickFormat(d3.format("$.2s")))
+      .select(".domain").remove()
+
+    svg1.append("text")
+      .attr("transform", "rotate(-90)")
+      .attr("y", 0 - margin.left)
+      .attr("x",0 - (height / 2))
+      .attr("dy", "1em")
+      .style("text-anchor", "middle")
+      .style("font-size","14px")
+      .text("Average Annual Wage");
+
+//recession line
+  	svg1.append("rect")
+  		.attr("x",180)
+  		.attr("y",0)
+  		.attr("width",36)
+  		.attr("height",height)
+  		.style("fill","light-blue")
+  		.style("opacity",0.1);
+
+    svg1
+      .append("rect")
+      .attr("x",0)
+      .attr("y",height + 20)
+      .attr("width",10)
+      .attr("height",10)
+      .style("fill","light-blue")
+      .style("opacity",0.1)
+      .style("stroke", "black")
+      .style("stroke-width",1);
+
+	svg1.append("text")
+	    .attr("x", 15)             
+	    .attr("y", height + 29)
+	    .attr("text-anchor", "left")  
+	    .style("font-size", "12px") 
+	    .style("text-decoration", "bold")  
+	    .text("Recession");
+
+
+
+    svg1.selectAll(".tick line").attr("stroke", "white")
+
+
+    // Add the lines
+    var line = d3.line()
+      .x(function(d) { return x(+d.Year) })
+      .y(function(d) { return y(+d.value) })
+    svg1.selectAll("myLines")
+      .data(dataReady)
+      .enter()
+      .append("path")
+        .attr("d", function(d){ return line(d.values) } )
+        .attr("stroke", function(d){ return myColor(d.name) })
+        .style("stroke-width", 1.5)
+        .style("fill", "none")
+        .style("stroke-opacity",0.8)
+
+
+// create a tooltip
+    var Tooltip = d3.select("#main_viz")
+      .append("div")
+      .style("opacity", 0)
+      .attr("class", "tooltip")
+      .style("background-color", "white")
+      .style("border", "solid")
+      .style("border-width", "2px")
+      .style("border-radius", "5px")
+      .style("padding", "5px")
+
+      // Three function that change the tooltip when user hover / move / leave a cell
+      var mouseover = function(d) {
+        Tooltip
+          .style("opacity", 1)
+      }
+      var mousemove = function(d) {
+        Tooltip
+          .html("$" + d3.format(",d")(d.value))
+          .style("left", (d3.mouse(this)[0]+70) + "px")
+          .style("top", (d3.mouse(this)[1]) + "px")
+      }
+      var mouseleave = function(d) {
+        Tooltip
+          .style("opacity", 0)
+      }
+
+    // Add the points
+    svg1
+      // First we need to enter in a group
+      .selectAll("myDots")
+      .data(dataReady)
+      .enter()
+        .append('g')
+        .style("fill", function(d){ return myColor(d.name) })
+      // Second we need to enter in the 'values' part of this group
+      .selectAll("myPoints")
+      .data(function(d){ return d.values })
+      .enter()
+      .append("circle")
+      	.attr("class","myCircle")
+        .attr("cx", function(d) { return x(d.Year) } )
+        .attr("cy", function(d) { return y(d.value) } )
+        .attr("r", 3)
+        .attr("stroke", "white")
+        .attr("stroke-width", 1)
+        .on("mouseover", mouseover)
+        .on("mousemove", mousemove)
+        .on("mouseleave", mouseleave)
+        //.attr("stroke", "white")
+
+
+        
+    // Add a legend at the end of each line
+    svg1
+      .selectAll("myLabels")
+      .data(dataReady)
+      .enter()
+        .append('g')
+        .append("text")
+          .datum(function(d) { return {name: d.name, value: d.values[d.values.length - 1]}; }) // keep only the last value of each time series
+          .attr("transform", function(d) { return "translate(" + x(d.value.Year) + "," + y(d.value.value) + ")"; }) // Put the text at the position of the last point
+          .attr("x", 12) // shift the text a bit more right
+          .text(function(d) { return d.name; })
+          .style("fill", function(d){ return myColor(d.name) })
+          .style("font-size", 12)
+
+})
+
+
+svgY
+  .append("rect")
+    .attr("x",0)
+    .attr("y",0)
+    .attr("height", height_changes)
+    .attr("width", width_changes)
+    .style("fill", "EBEBEB")
+
+ svgY
+  .append("rect")
+    .attr("x",0)
+    .attr("y",400)
+    .attr("height", height_changes)
+    .attr("width", width_changes)
+    .style("fill", "EBEBEB")
+
+svgY.append("text")
+    .attr("x", (width_changes / 2))             
+    .attr("y", 0 - (margin_changes.top / 2))
+    .attr("text-anchor", "middle")  
+    .style("font-size", "12px") 
+    .style("text-decoration", "bold")  
+    .text("Yellowstone County");
+
+
+
+//Read the data
+d3.csv("https://raw.githubusercontent.com/hannahjordanUM/Data_Vis_Repo/master/yellowstone_change_percent.csv", function(data) {
+
+    // List of groups (here I have one group per column)
+    var allGroup = ["Annual Pay","Num. Employees"]
+
+    // Reformat the data: we need an array of arrays of {x, y} tuples
+    var dataReady = allGroup.map( function(grpName) { // .map allows to do something for each element of the list
+      return {
+        name: grpName,
+        values: data.map(function(d) {
+          return {Year: d3.timeParse("%Y-%m-%d")(d.Year), value: +d[grpName]};
+        })
+      };
+    });
+    // I strongly advise to have a look to dataReady with
+    // console.log(dataReady)
+
+    // A color scale: one color for each group
+    var myColor = d3.scaleOrdinal(["#336699","#666666"])
+      .domain(allGroup)
+      //.range(d3.schemeDark2);
+      //.range(d3.schemeCategory10);
+
+    // Add X axis --> it is a date format
+    var x = d3.scaleTime()
+      .domain([new Date("2003-01-01"), new Date("2018-01-01")])
+      .range([ 0, width_changes ]);
+
+
+
+    svgY.append("g")
+      .attr("transform", "translate(0," + height_changes + ")")
+      .call(d3.axisBottom(x).tickSize(-height_changes).ticks(8))
+      .select(".domain").remove()
+    // Add Y axis
+    var y = d3.scaleLinear()
+      .domain( [-10,10])
+      .range([ height_changes, 0 ]);
+    svgY.append("g")
+      .call(d3.axisLeft(y).tickSize(-width_changes).ticks(4))
+      .select(".domain").remove()
+
+
+    svgY.append("text")
+      .attr("transform", "rotate(-90)")
+      .attr("y", 0 - margin_changes.left)
+      .attr("x",0 - (height_changes / 2))
+      .attr("dy", "1em")
+      .style("text-anchor", "middle")
+      .style("font-size","12px")
+      .text("12 Month Percentage Change");
+
+  
+
+    svgY.selectAll(".tick line").attr("stroke", "white")
+
+
+//recession line
+  	svgY.append("rect")
+  		.attr("x",105)
+  		.attr("y",0)
+  		.attr("width",22)
+  		.attr("height",height_changes)
+  		.style("fill","light-blue")
+  		.style("opacity",0.1);
+
+    svgY
+      .append("rect")
+      .attr("x",0)
+      .attr("y",height_changes + 20)
+      .attr("width",10)
+      .attr("height",10)
+      .style("fill","light-blue")
+      .style("opacity",0.1)
+      .style("stroke", "black")
+      .style("stroke-width",1);
+
+	svgY.append("text")
+	    .attr("x", 15)             
+	    .attr("y", height_changes + 29)
+	    .attr("text-anchor", "left")  
+	    .style("font-size", "12px") 
+	    .style("text-decoration", "bold")  
+	    .text("Recession");
+
+
+    // Add the lines
+    var line = d3.line()
+      .x(function(d) { return x(+d.Year) })
+      .y(function(d) { return y(+d.value) })
+    svgY.selectAll("myLines")
+      .data(dataReady)
+      .enter()
+      .append("path")
+        .attr("d", function(d){ return line(d.values) } )
+        .attr("stroke", function(d){ return myColor(d.name) })
+        .style("stroke-width", 1.5)
+        .style("fill", "none")
+        .style("stroke-opacity",0.8)
+
+
+    var Tooltip = d3.select("#yellowstone")
+      .append("div")
+      .style("opacity", 0)
+      .attr("class", "tooltip")
+      .style("background-color", "white")
+      .style("border", "solid")
+      .style("border-width", "2px")
+      .style("border-radius", "5px")
+      .style("padding", "5px")
+
+      // Three function that change the tooltip when user hover / move / leave a cell
+      var mouseover = function(d) {
+        Tooltip
+          .style("opacity", 1)
+      }
+      var mousemove = function(d) {
+        Tooltip
+          .html("Percentage Change: " + d.value+"%")
+          .style("left", (d3.mouse(this)[0]+70) + "px")
+          .style("top", (d3.mouse(this)[1]) + "px")
+      }
+      var mouseleave = function(d) {
+        Tooltip
+          .style("opacity", 0)
+      }
+
+    // Add the points
+    svgY
+      // First we need to enter in a group
+      .selectAll("myDots")
+      .data(dataReady)
+      .enter()
+        .append('g')
+        .style("fill", function(d){ return myColor(d.name) })
+      // Second we need to enter in the 'values' part of this group
+      .selectAll("myPoints")
+      .data(function(d){ return d.values })
+      .enter()
+      .append("circle")
+      	.attr("class", "myCircle")
+
+        .attr("cx", function(d) { return x(d.Year) } )
+        .attr("cy", function(d) { return y(d.value) } )
+        .attr("r", 2)
+        .attr("stroke", function(d){ return myColor(d.name)})
+        .attr("fill", "white")
+        .on("mouseover", mouseover)
+        .on("mousemove", mousemove)
+        .on("mouseleave", mouseleave)
+        //.attr("stroke", "white")
+
+
+   /*
+    // Add a legend at the end of each line
+    svgY
+      .selectAll("myLabels")
+      .data(dataReady)
+      .enter()
+        .append('g')
+        .append("text")
+          .datum(function(d) { return {name: d.name, value: d.values[d.values.length - 1]}; }) // keep only the last value of each time series
+          .attr("transform", function(d) { return "translate(" + x(d.value.Year) + "," + y(d.value.value) + ")"; }) // Put the text at the position of the last point
+          .attr("x", 12) // shift the text a bit more right
+          .text(function(d) { return d.name; })
+          .style("fill", function(d){ return myColor(d.name) })
+          .style("font-size", 12)
+
+*/
+
+    var size = 10
+    svgY
+      .selectAll("legendDots")
+      .data(dataReady)
+      .enter()
+      .append("rect")
+      .attr("x",width_changes - 100)
+      .attr("y",function(d,i){ return height_changes-40 + i*(size+5)})
+      .attr("width",size)
+      .attr("height",size)
+      .style("fill", function(d){return myColor(d.name) })
+
+    svgY
+      .selectAll("myLabels")
+      .data(dataReady)
+      .enter()
+      .append("text")
+      	.attr("x",width_changes - 85)
+      	.attr("y",function(d,i){ return height_changes-34 + i*(size+5)})
+        .style("fill", "black")
+        .style("font-size","12px")
+        .text(function(d){ return d.name })
+        .attr("text-anchor","left")
+        .style("alignment-baseline","middle")
+        .style("opacity",0.7)
+
+})
+
+svgM
+  .append("rect")
+    .attr("x",0)
+    .attr("y",0)
+    .attr("height", height_changes)
+    .attr("width", width_changes)
+    .style("fill", "EBEBEB")
+
+ svgM
+  .append("rect")
+    .attr("x",0)
+    .attr("y",400)
+    .attr("height", height_changes)
+    .attr("width", width_changes)
+    .style("fill", "EBEBEB")
+
+
+svgM.append("text")
+    .attr("x", (width_changes / 2))             
+    .attr("y", 0 - (margin_changes.top / 2))
+    .attr("text-anchor", "middle")  
+    .style("font-size", "12px") 
+    .style("text-decoration", "bold")  
+    .text("Missoula County");
+
+
+//Read the data
+d3.csv("https://raw.githubusercontent.com/hannahjordanUM/Data_Vis_Repo/master/missoula_change_percent.csv", function(data) {
+
+    // List of groups (here I have one group per column)
+    var allGroup = ["Annual Pay","Num. Employees"]
+
+    // Reformat the data: we need an array of arrays of {x, y} tuples
+    var dataReady = allGroup.map( function(grpName) { // .map allows to do something for each element of the list
+      return {
+        name: grpName,
+        values: data.map(function(d) {
+          return {Year: d3.timeParse("%Y-%m-%d")(d.Year), value: +d[grpName]};
+        })
+      };
+    });
+    // I strongly advise to have a look to dataReady with
+    // console.log(dataReady)
+
+    var myColor = d3.scaleOrdinal(["#cc3333","#666666"])
+      .domain(allGroup)
+
+    // Add X axis --> it is a date format
+    var x = d3.scaleTime()
+      .domain([new Date("2003-01-01"), new Date("2018-01-01")])
+      .range([ 0, width_changes ]);
+
+
+
+    svgM.append("g")
+      .attr("transform", "translate(0," + height_changes + ")")
+      .call(d3.axisBottom(x).tickSize(-height_changes).ticks(8))
+      .select(".domain").remove()
+    // Add Y axis
+    var y = d3.scaleLinear()
+      .domain( [-10,10])
+      .range([ height_changes, 0 ]);
+    svgM.append("g")
+      .call(d3.axisLeft(y).tickSize(-width_changes).ticks(4))
+      .select(".domain").remove()
+
+
+    svgM.append("text")
+      .attr("transform", "rotate(-90)")
+      .attr("y", 0 - margin_changes.left)
+      .attr("x",0 - (height_changes / 2))
+      .attr("dy", "1em")
+      .style("text-anchor", "middle")
+      .style("font-size","12px")
+      .text("12 Month Percentage Change");
+
+  
+
+    svgM.selectAll(".tick line").attr("stroke", "white")
+
+
+//recession line
+  	svgM.append("rect")
+  		.attr("x",105)
+  		.attr("y",0)
+  		.attr("width",22)
+  		.attr("height",height_changes)
+  		.style("fill","light-blue")
+  		.style("opacity",0.1);
+
+    svgM
+      .append("rect")
+      .attr("x",0)
+      .attr("y",height_changes + 20)
+      .attr("width",10)
+      .attr("height",10)
+      .style("fill","light-blue")
+      .style("opacity",0.1)
+      .style("stroke", "black")
+      .style("stroke-width",1);
+
+	svgM.append("text")
+	    .attr("x", 15)             
+	    .attr("y", height_changes + 29)
+	    .attr("text-anchor", "left")  
+	    .style("font-size", "12px") 
+	    .style("text-decoration", "bold")  
+	    .text("Recession");
+
+
+    // Add the lines
+    var line = d3.line()
+      .x(function(d) { return x(+d.Year) })
+      .y(function(d) { return y(+d.value) })
+    svgM.selectAll("myLines")
+      .data(dataReady)
+      .enter()
+      .append("path")
+        .attr("d", function(d){ return line(d.values) } )
+        .attr("stroke", function(d){ return myColor(d.name) })
+        .style("stroke-width", 1.5)
+        .style("fill", "none")
+        .style("stroke-opacity",0.8)
+
+    // Add the points
+    var Tooltip = d3.select("#missoula")
+      .append("div")
+      .style("opacity", 0)
+      .attr("class", "tooltip")
+      .style("background-color", "white")
+      .style("border", "solid")
+      .style("border-width", "2px")
+      .style("border-radius", "5px")
+      .style("padding", "5px")
+
+      // Three function that change the tooltip when user hover / move / leave a cell
+      var mouseover = function(d) {
+        Tooltip
+          .style("opacity", 1)
+      }
+      var mousemove = function(d) {
+        Tooltip
+          .html("Percentage Change: " + d.value+"%")
+          .style("left", (d3.mouse(this)[0]+70) + "px")
+          .style("top", (d3.mouse(this)[1]) + "px")
+      }
+      var mouseleave = function(d) {
+        Tooltip
+          .style("opacity", 0)
+      }
+
+    // Add the points
+    svgM
+      // First we need to enter in a group
+      .selectAll("myDots")
+      .data(dataReady)
+      .enter()
+        .append('g')
+        .style("fill", function(d){ return myColor(d.name) })
+      // Second we need to enter in the 'values' part of this group
+      .selectAll("myPoints")
+      .data(function(d){ return d.values })
+      .enter()
+      .append("circle")
+      	.attr("class", "myCircle")
+
+        .attr("cx", function(d) { return x(d.Year) } )
+        .attr("cy", function(d) { return y(d.value) } )
+        .attr("r", 2)
+        .attr("stroke", function(d){ return myColor(d.name)})
+        .attr("fill", "white")
+        .on("mouseover", mouseover)
+        .on("mousemove", mousemove)
+        .on("mouseleave", mouseleave)
+
+
+  /*   
+    // Add a legend at the end of each line
+    svgM
+      .selectAll("myLabels")
+      .data(dataReady)
+      .enter()
+        .append('g')
+        .append("text")
+          .datum(function(d) { return {name: d.name, value: d.values[d.values.length - 1]}; }) // keep only the last value of each time series
+          .attr("transform", function(d) { return "translate(" + x(d.value.Year) + "," + y(d.value.value) + ")"; }) // Put the text at the position of the last point
+          .attr("x", 12) // shift the text a bit more right
+          .text(function(d) { return d.name; })
+          .style("fill", function(d){ return myColor(d.name) })
+          .style("font-size", 12)
+*/
+
+    var size = 10
+    svgM
+      .selectAll("legendDots")
+      .data(dataReady)
+      .enter()
+      .append("rect")
+      .attr("x",width_changes - 100)
+      .attr("y",function(d,i){ return height_changes-40 + i*(size+5)})
+      .attr("width",size)
+      .attr("height",size)
+      .style("fill", function(d){return myColor(d.name) })
+
+    svgM
+      .selectAll("myLabels")
+      .data(dataReady)
+      .enter()
+      .append("text")
+      	.attr("x",width_changes - 85)
+      	.attr("y",function(d,i){ return height_changes-34 + i*(size+5)})
+        .style("fill", "black")
+        .style("font-size","12px")
+        .text(function(d){ return d.name })
+        .attr("text-anchor","left")
+        .style("alignment-baseline","middle")
+        .style("opacity",0.7)
+
+})
+
+svgG
+  .append("rect")
+    .attr("x",0)
+    .attr("y",0)
+    .attr("height", height_changes)
+    .attr("width", width_changes)
+    .style("fill", "EBEBEB")
+
+ svgG
+  .append("rect")
+    .attr("x",0)
+    .attr("y",400)
+    .attr("height", height_changes)
+    .attr("width", width_changes)
+    .style("fill", "EBEBEB")
+
+svgG.append("text")
+    .attr("x", (width_changes / 2))             
+    .attr("y", 0 - (margin_changes.top / 2))
+    .attr("text-anchor", "middle")  
+    .style("font-size", "12px") 
+    .style("text-decoration", "bold")  
+    .text("Gallatin County");
+
+
+
+//Read the data
+d3.csv("https://raw.githubusercontent.com/hannahjordanUM/Data_Vis_Repo/master/gallatin_change_percent.csv", function(data) {
+
+    // List of groups (here I have one group per column)
+    var allGroup = ["Annual Pay","Num. Employees"]
+
+    // Reformat the data: we need an array of arrays of {x, y} tuples
+    var dataReady = allGroup.map( function(grpName) { // .map allows to do something for each element of the list
+      return {
+        name: grpName,
+        values: data.map(function(d) {
+          return {Year: d3.timeParse("%Y-%m-%d")(d.Year), value: +d[grpName]};
+        })
+      };
+    });
+    // I strongly advise to have a look to dataReady with
+    // console.log(dataReady)
+
+    var myColor = d3.scaleOrdinal(["#339933","#666666"])
+      .domain(allGroup)
+      //.range(d3.schemeDark2);
+      //.range(d3.schemeCategory10);
+
+
+    // Add X axis --> it is a date format
+    var x = d3.scaleTime()
+      .domain([new Date("2003-01-01"), new Date("2018-01-01")])
+      .range([ 0, width_changes ]);
+
+
+
+    svgG.append("g")
+      .attr("transform", "translate(0," + height_changes + ")")
+      .call(d3.axisBottom(x).tickSize(-height_changes).ticks(8))
+      .select(".domain").remove()
+    // Add Y axis
+    var y = d3.scaleLinear()
+      .domain( [-10,10])
+      .range([ height_changes, 0 ]);
+    svgG.append("g")
+      .call(d3.axisLeft(y).tickSize(-width_changes).ticks(4))
+      .select(".domain").remove()
+
+
+    svgG.append("text")
+      .attr("transform", "rotate(-90)")
+      .attr("y", 0 - margin_changes.left)
+      .attr("x",0 - (height_changes / 2))
+      .attr("dy", "1em")
+      .style("text-anchor", "middle")
+      .style("font-size","12px")
+      .text("12 Month Percentage Change");
+
+
+    svgG.selectAll(".tick line").attr("stroke", "white")
+
+//recession line
+  	svgG.append("rect")
+  		.attr("x",105)
+  		.attr("y",0)
+  		.attr("width",22)
+  		.attr("height",height_changes)
+  		.style("fill","light-blue")
+  		.style("opacity",0.1);
+
+    svgG
+      .append("rect")
+      .attr("x",0)
+      .attr("y",height_changes + 20)
+      .attr("width",10)
+      .attr("height",10)
+      .style("fill","light-blue")
+      .style("opacity",0.1)
+      .style("stroke", "black")
+      .style("stroke-width",1);
+
+	svgG.append("text")
+	    .attr("x", 15)             
+	    .attr("y", height_changes + 29)
+	    .attr("text-anchor", "left")  
+	    .style("font-size", "12px") 
+	    .style("text-decoration", "bold")  
+	    .text("Recession");
+
+
+    // Add the lines
+    var line = d3.line()
+      .x(function(d) { return x(+d.Year) })
+      .y(function(d) { return y(+d.value) })
+    svgG.selectAll("myLines")
+      .data(dataReady)
+      .enter()
+      .append("path")
+        .attr("d", function(d){ return line(d.values) } )
+        .attr("stroke", function(d){ return myColor(d.name) })
+        .style("stroke-width", 1.5)
+        .style("fill", "none")
+        .style("stroke-opacity",0.8)
+    
+    var Tooltip = d3.select("#gallatin")
+      .append("div")
+      .style("opacity", 0)
+      .attr("class", "tooltip")
+      .style("background-color", "white")
+      .style("border", "solid")
+      .style("border-width", "2px")
+      .style("border-radius", "5px")
+      .style("padding", "5px")
+
+      // Three function that change the tooltip when user hover / move / leave a cell
+      var mouseover = function(d) {
+        Tooltip
+          .style("opacity", 1)
+      }
+      var mousemove = function(d) {
+        Tooltip
+          .html("Percentage Change: " + d.value+"%")
+          .style("left", (d3.mouse(this)[0]+70) + "px")
+          .style("top", (d3.mouse(this)[1]) + "px")
+      }
+      var mouseleave = function(d) {
+        Tooltip
+          .style("opacity", 0)
+      }
+
+    // Add the points
+    svgG
+      // First we need to enter in a group
+      .selectAll("myDots")
+      .data(dataReady)
+      .enter()
+        .append('g')
+        .style("fill", function(d){ return myColor(d.name) })
+      // Second we need to enter in the 'values' part of this group
+      .selectAll("myPoints")
+      .data(function(d){ return d.values })
+      .enter()
+      .append("circle")
+      	.attr("class", "myCircle")
+
+        .attr("cx", function(d) { return x(d.Year) } )
+        .attr("cy", function(d) { return y(d.value) } )
+        .attr("r", 2)
+        .attr("stroke", function(d){ return myColor(d.name)})
+        .attr("fill", "white")
+        .on("mouseover", mouseover)
+        .on("mousemove", mousemove)
+        .on("mouseleave", mouseleave)
+/*
+
+      svgG
+      	.append("text")
+      	.attr("x",width_changes+10)
+      	.attr("y",height_changes/2 - 20)
+      	.text("Num. Employees")
+        .style("fill", "#666666")
+      	.style("font-size", 12)		
+
+
+      svgG
+      	.append("text")
+      	.attr("x",width_changes+10)
+      	.attr("y",height_changes/2 - 35)
+      	.text("Annual Pay")
+        .style("fill", "#339933")
+      	.style("font-size", 12)	
+
+*/
+
+
+    var size = 10
+    svgG
+      .selectAll("legendDots")
+      .data(dataReady)
+      .enter()
+      .append("rect")
+      .attr("x",width_changes - 100)
+      .attr("y",function(d,i){ return height_changes-40 + i*(size+5)})
+      .attr("width",size)
+      .attr("height",size)
+      .style("fill", function(d){return myColor(d.name) })
+
+    svgG
+      .selectAll("myLabels")
+      .data(dataReady)
+      .enter()
+      .append("text")
+      	.attr("x",width_changes - 85)
+      	.attr("y",function(d,i){ return height_changes-34 + i*(size+5)})
+        .style("fill", "black")
+        .style("font-size","12px")
+        .text(function(d){ return d.name })
+        .attr("text-anchor","left")
+        .style("alignment-baseline","middle")
+        .style("opacity",0.7)
+
+
+})
+
+
+svgBar
+  .append("rect")
+    .attr("x",0)
+    .attr("y",0)
+    .attr("height", height_bar)
+    .attr("width", width_bar)
+    .style("fill", "EBEBEB")
+
+ svgBar
+  .append("rect")
+    .attr("x",0)
+    .attr("y",400)
+    .attr("height", height_bar)
+    .attr("width", width_bar)
+    .style("fill", "EBEBEB")
+
+
+
+d3.csv("https://raw.githubusercontent.com/hannahjordanUM/Data_Vis_Repo/master/rent_prices.csv", function(data) {
+
+  // List of subgroups = header of the csv files = soil condition here
+  var subgroups = data.columns.slice(1)
+
+  // List of groups = species here = value of the first column called group -> I show them on the X axis
+  var groups = d3.map(data, function(d){return(d.county)}).keys()
+
+  // Add X axis
+  var x = d3.scaleBand()
+      .domain(groups)
+      .range([0, width_bar])
+      .padding([0.2])
+  svgBar.append("g")
+    .attr("transform", "translate(0," + height_bar + ")")
+    .call(d3.axisBottom(x).tickSize(0));
+
+  // Add Y axis
+  var y = d3.scaleLinear()
+    .domain([0, 5000])
+    .range([ height_bar, 0 ]);
+  svgBar.append("g")
+    .call(d3.axisLeft(y).tickSize(-width_bar).ticks(8).tickFormat(d3.format("$.2s")))
+
+      .select(".domain").remove()
+
+    svgBar.selectAll(".tick line").attr("stroke", "white")
+
+
+  // Another scale for subgroup position?
+  var xSubgroup = d3.scaleBand()
+    .domain(subgroups)
+    .range([0, x.bandwidth()])
+    .padding([0.05])
+
+  // color palette = one color per subgroup
+  var color = d3.scaleOrdinal()
+    .domain(subgroups)
+    .range(["#30AEC1", "#00695C"])
+
+  // Show the bars
+  svgBar.append("g")
+    .selectAll("g")
+    // Enter in data = loop group per group
+    .data(data)
+    .enter()
+    .append("g")
+      .attr("transform", function(d) { return "translate(" + x(d.county) + ",0)"; })
+
+    .selectAll("rect")
+    .data(function(d) { return subgroups.map(function(key) { return {key: key, value: d[key]}; }); })
+    .enter().append("rect")
+      .attr("x", function(d) { return xSubgroup(d.key); })
+      .attr("y", function(d) { return y(d.value); })
+      .attr("width", xSubgroup.bandwidth())
+      .attr("height", function(d) { return height_bar - y(d.value); })
+      .attr("fill", function(d) { return color(d.key); })
+
+    
+
+    var legend = svgBar.selectAll(".legend")
+      .data(subgroups.slice().reverse())
+    .enter().append("g")
+      .attr("class", "legend")
+      .attr("transform", function(d, i) { return "translate(0," + i * 20 + ")"; });
+
+    legend
+      .append("rect")
+      .attr("x",width_bar-25)
+      .attr("y",10)
+      .attr("width", 18)
+      .attr("height", 18)
+      .style("fill", color);
+
+  legend.append("text")
+      .attr("x",width_bar-30)
+      .attr("y",17)
+      .attr("dy", ".35em")
+      .style("text-anchor", "end")
+      .style("font-size","12px")
+      .text(function(d) { return d; });
+
+})
+
+</script>
