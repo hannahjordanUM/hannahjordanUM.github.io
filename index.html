@@ -92,7 +92,8 @@
 <table>
   <tr>
     <td>
-    	<div id="main_viz"></div></br>
+    	<div id="main_viz"></div>
+      <div></div>
 	</td>
     <td>
     	<div id="bar_chart"></div>
@@ -114,13 +115,15 @@
   <tr>
   	<td>
     	 <div id="yellowstone"></div>
-    	
+       <div></div>
 	</td>
 	<td>
 		 <div id="missoula"></div>
-		</td>
+      <div></div>
+	</td>
 	<td>
     	<div id="gallatin"></div>
+      <div></div>
     </td>
 
 </tr>
@@ -334,7 +337,7 @@ d3.csv("https://raw.githubusercontent.com/hannahjordanUM/Data_Vis_Repo/master/sa
       }
       var mousemove = function(d) {
         Tooltip
-          .html("$" + d.value)
+          .html("$" + d3.format(",d")(d.value))
           .style("left", (d3.mouse(this)[0]+70) + "px")
           .style("top", (d3.mouse(this)[1]) + "px")
       }
