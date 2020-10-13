@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<!--<script src="https://d3js.org/d3.v4.min.js"></script>-->
+
+
+<style type="text/css">
+
+/* Legend Font Style */
+body {
+	font-family: "Trebuchet MS", Helvetica, sans-serif;
+	background-color: #ffffff;
+}
+
+
+
+.axis text {
+	font: 10px sans-serif;
+}
+
+.axis line, .axis path {
+	fill: none;
+	stroke: #000;
+	shape-rendering: crispEdges;
+}
+
+  .line {
+    fill: none;
+    stroke: steelblue;
+    stroke-width: 2px;
+  }
+
+  .grid_line {
+    stroke: lightgrey;
+    stroke-opacity: 0.7;
+    shape-rendering: crispEdges;
+  }
+
+  .grid_path {
+    stroke-width: 0;
+  }
+
+  .legend rect {
+    fill:white;
+    stroke:black;
+    opacity:0.8;
+}
+
+    .counties {
+      fill: none;
+      stroke: white;
+      stroke-width: 0.5;
+    }
+    
+    .states {
+      fill: none;
+      stroke: black;
+      stroke-width: 0.4;
+      stroke-linejoin: round;
+    }
+
+    .graph-title  {
+        font-family: "Trebuchet MS", Helvetica, sans-serif;
+        font-size: 14px;
+        font-weight: bold;
+        text-align: middle;
+
+    }
+
+    .d3-tip {
+      line-height: 1;
+      padding: 8px;
+      background: rgba(43,43,43, 0.8);
+      color: #fff;
+      border-radius: 2px;
+    }
+
+#tdata {
+  border-collapse: collapse;
+  font-family: Helvetica; 
+  font-size:12px; 
+  width: 95%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#tdata td,th {
+  border: 1px solid black;
+  padding: 5px;
+}
+
+#tdata th {
+  text-emphasis: bold;
+  font-size: 12px;
+  background-color: #DFDFDF;
+}
+
+}
+
+
+</style>
+
+
+
+
+
+</head>
+
+<body onload='load()'>
+
+	<br/>
+	<table style="border: solid black 0.5px;">
+		<tr>
+			<td style="text-align: center;">
+
+				<h1 style="font-family: Helvetica; font-size: 30px;" >The number of confirmed COVID-19 cases per capita for each US county is higher for counties with a larger population size than for those with a smaller population size. </h1>
+			</td>
+		</tr>
+	<table>
+	<table width="100%">
+		<tr>
+			<td>
+				<h2 style="font-family: Helvetica; font-size: 14px; text-align: center; text-decoration-line: underline;" >COVID-19 cases per Capita of Counties in the United States as of October 1, 2020</h2>
+				<div id="map"></div>
+
+			</td>
+			<td>
+				<div >
+					<p style="text-align: center;">Covid-19 cases per capita is determined by calculating the percentage of confirmed cases for a county (as of October 1, 2020) to the total number of residents in the county.</p>
+				</div>
+				<div id="scatterplot"></div>
+				<div>
+					<h2 style="font-family: Helvetica; font-size: 14px; text-align: center; text-decoration-line: underline;" >U.S. Counties with Highest Percentage of Cases Per Population</h2>
+					<table id="tdata">
+						<tr>
+							<th>County Name</th>
+							<th>Number of Cases</th>
+							<th>Population Size</th>
+							<th>Cases/Population</th>
+						</tr>
+						<tr>
+							<td>Lincoln County, AR</td>
+							<td style="text-align: center;">2026</td>
+							<td style="text-align: center;">13024</td>
+
+							<td style="text-align: center;">15.56%</td>
+						<tr>
+						</tr>
+						<tr>
+							<td>Chattahoochee County, GA</td>
+							<td style="text-align: center;">10907</td>
+							<td style="text-align: center;">1678</td>
+							<td style="text-align: center;">15.38%</td>
+						</tr>
+						<tr>
+							<td>Trousdale County, TN</td>
+							<td style="text-align: center;">11284</td>
+							<td style="text-align: center;">1676</td>
+							<td style="text-align: center;">14.85%</td>
+						</tr>
+						<tr>
+							<td>Lafayette County, FL</td>
+							<td style="text-align: center;">8422</td>
+							<td style="text-align: center;">1233</td>
+							<td style="text-align: center;">14.64%</td>
+						</tr>
+						<tr>
+							<td>Lake County, TN</td>
+							<td style="text-align: center;">7016</td>
+							<td style="text-align: center;">928</td>
+							<td style="text-align: center;">13.23%</td>
+							
+						</tr>
+					</table>
+				</div>
+			</td>
+		</tr>
+	</table>
+				
+
+
+
+
+
+
+</body>
+<script src="https://d3js.org/d3.v4.min.js"></script>
+<script src="scatterplot.js"></script>
+
+<script src="https://d3js.org/d3.v5.min.js"></script>
+<script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+<script src="https://d3js.org/topojson.v2.min.js"></script>
+<script src="tool_tip.js"></script>
+
+<script src="map.js"></script>
+
+</html>
