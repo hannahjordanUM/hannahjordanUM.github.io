@@ -31,6 +31,14 @@ var g = svg.append("g");
 
     // add a legend
     var w = 20, h = 200;
+
+    svg.append("text")
+        .attr("x",750)             
+        .attr("y",40)
+        .attr("font-family", "sans-serif")
+        .attr("text-anchor","middle")
+        .style("font-size", "10px") 
+        .text("Percentage of Confirmed Cases/County Population");
 /*
     var key = d3.select("svg")
       .append("svg")
@@ -57,11 +65,14 @@ var g = svg.append("g");
       .attr("stop-color", lowColor)
       .attr("stop-opacity", 1);
 
+  
+
     svg.append("rect")
       .attr("width", w )
       .attr("height", h+1)
       .style("fill", "url(#gradient)")
       .attr("transform", "translate(850,50) rotate(90)");
+
 
     var yScale = d3.scaleLinear()
       .range([h, 0])
