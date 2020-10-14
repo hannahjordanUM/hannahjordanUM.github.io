@@ -110,7 +110,7 @@ d3.csv("https://raw.githubusercontent.com/hannahjordanUM/Data_Vis_Repo/master/Ve
       .attr("cx", function (d) { return x(d.pop_thousand); } )
       .attr("cy", function (d) { return y(d.cases_per_pop); } )
       .attr("r", 1.75)
-      .style("fill", "#006666")
+      .style("fill", "#000080")
 
       .on("mouseover", mouseover)
       .on("mousemove", mousemove)

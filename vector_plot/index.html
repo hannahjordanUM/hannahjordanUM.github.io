@@ -103,13 +103,10 @@ body {
 
 
 
-
-
 </head>
 
 <body onload='load()'>
 
-	<br/>
 	<table style="border: solid black 0.5px;">
 		<tr>
 			<td style="text-align: center;">
@@ -121,7 +118,7 @@ body {
 	<table width="100%">
 		<tr>
 			<td>
-				<h2 style="font-family: Helvetica; font-size: 14px; text-align: center; text-decoration-line: underline;" >COVID-19 cases per Capita of Counties in the United States as of October 1, 2020</h2>
+				<h2 style="font-family: Helvetica; font-size: 14px; text-align: center; text-decoration-line: underline;" >Total Number of COVID-19 Cases per Capita of Counties in the United States</h2><h2 style="font-family: Helvetica; font-size: 12px; text-align: center;" >Total Known Cases from January 22, 2020 - October 1, 2020</h2>
 				<div id="map"></div>
 
 			</td>
@@ -131,7 +128,7 @@ body {
 				</div>
 				<div id="scatterplot"></div>
 				<div>
-					<h2 style="font-family: Helvetica; font-size: 14px; text-align: center; text-decoration-line: underline;" >U.S. Counties with Highest Percentage of Cases Per Population</h2>
+					<h2 style="font-family: Helvetica; font-size: 14px; text-align: center; text-decoration-line: underline;" >U.S. Counties with Highest Percentage of Total Cases Per Population</h2>
 					<table id="tdata">
 						<tr>
 							<th>County Name</th>
@@ -178,6 +175,11 @@ body {
 		</tr>
 	</table>
 				
+<div style="font-size: 10px;">
+	<p>US Albers projected shapefile retrieved from <a href=https://github.com/topojson/us-atlas>"https://github.com/topojson/us-atlas"</a> on October 13, 2020. This shape file is one of many pre-projected shapefiles from the US Census Beueau's cartographic boundary shapefiles.</p>
+	<p>Data on the number of known Coronavirus cases by county and county population data retrieved from <a href="https://usafacts.org/visualizations/coronavirus-covid-19-spread-map/">"usafacts.org"</a> on October 13, 2020. Data used was the total number of known cases from January 22, 2020 - October 1, 2020.</p>
+</div>
+
 
 
 

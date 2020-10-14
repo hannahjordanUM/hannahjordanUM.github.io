@@ -18,15 +18,14 @@ var Cases = d3.map();
 var Population = d3.map();
 var path = d3.geoPath();
 var lowColor = 'rgb(245, 245, 255)'; // teal hued
-var highColor = '#006666';
-//var highColor = '#000080'; // purple
+//var highColor = '#004d4d';
+var highColor = '#000080'; // purple
 
 /*
 var color = d3.scaleQuantize([2, 18], 
       d3.schemeOranges[9])
 */
 var color = d3.scaleLinear().domain([0,16]).range([lowColor, highColor])
-
 
 var g = svg.append("g");
 
