@@ -57,7 +57,7 @@ d3.csv("https://raw.githubusercontent.com/hannahjordanUM/Data_Vis_Repo/master/Ve
     .attr("dy", "1em")
     .style("text-anchor", "middle")
     .style("font-size","12px")
-    .text("Percentage of Population Infected");
+    .text("Percentage of Confirmed Cases/County Population");
 
     svg2.append("text")
     .attr("y", (width_scatter/2) + 10)
