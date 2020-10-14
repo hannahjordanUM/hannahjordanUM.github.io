@@ -63,6 +63,7 @@ body {
     .graph-title  {
         font-family: "Trebuchet MS", Helvetica, sans-serif;
         font-size: 14px;
+        font-weight: bold;
         text-align: middle;
 
     }
@@ -119,25 +120,16 @@ body {
 			<td>
 				<h2 style="font-family: Helvetica; font-size: 14px; text-align: center; text-decoration-line: underline;" >Total Number of COVID-19 Cases per Capita of Counties in the United States</h2><h2 style="font-family: Helvetica; font-size: 12px; text-align: center;" >Total Known Cases from January 22, 2020 - October 1, 2020</h2>
 				<div id="map"></div>
+				
 
 			</td>
 			<td>
 				<div >
-					<table style="border: black 0.5px dashed;">
-						<tr>
-							<td>
-								<p style="text-align: center;">Covid-19 cases per capita is determined by calculating the percentage of confirmed cases for a county (as of October 1, 2020) to the total number of residents in the county.</p>
-							</td>
-						</tr>
-					</table>
+					<p style="text-align: center;">Covid-19 cases per capita is determined by calculating the percentage of confirmed cases for a county (as of October 1, 2020) to the total number of residents in the county.</p>
 				</div>
-				<br/>
-				<h2 style="font-family: Helvetica; font-size: 14px; text-align: center; text-decoration-line: underline;" >County Size vs Cases per Capita</h2>
-					
-
 				<div id="scatterplot"></div>
 				<div>
-					<h2 style="font-family: Helvetica; font-size: 14px; text-align: center; text-decoration-line: underline;" >U.S. Counties with Highest Percentage of Total Cases Per Capita</h2>
+					<h2 style="font-family: Helvetica; font-size: 14px; text-align: center; text-decoration-line: underline;" >U.S. Counties with Highest Percentage of Total Cases Per Population</h2>
 					<table id="tdata">
 						<tr>
 							<th>County Name</th>
@@ -147,34 +139,34 @@ body {
 						</tr>
 						<tr>
 							<td>Lincoln County, AR</td>
-							<td style="text-align: center;">2026</td>
-							<td style="text-align: center;">13024</td>
+							<td style="text-align: center;">2,026</td>
+							<td style="text-align: center;">13,024</td>
 
 							<td style="text-align: center;">15.56%</td>
 						<tr>
 						</tr>
 						<tr>
 							<td>Chattahoochee County, GA</td>
-							<td style="text-align: center;">10907</td>
-							<td style="text-align: center;">1678</td>
+							<td style="text-align: center;">1,678</td>
+							<td style="text-align: center;">10,907</td>
 							<td style="text-align: center;">15.38%</td>
 						</tr>
 						<tr>
 							<td>Trousdale County, TN</td>
-							<td style="text-align: center;">11284</td>
-							<td style="text-align: center;">1676</td>
+							<td style="text-align: center;">1,676</td>
+							<td style="text-align: center;">11,284</td>
 							<td style="text-align: center;">14.85%</td>
 						</tr>
 						<tr>
 							<td>Lafayette County, FL</td>
-							<td style="text-align: center;">8422</td>
-							<td style="text-align: center;">1233</td>
+							<td style="text-align: center;">1,233</td>
+							<td style="text-align: center;">8,422</td>
 							<td style="text-align: center;">14.64%</td>
 						</tr>
 						<tr>
 							<td>Lake County, TN</td>
-							<td style="text-align: center;">7016</td>
 							<td style="text-align: center;">928</td>
+							<td style="text-align: center;">7,016</td>
 							<td style="text-align: center;">13.23%</td>
 							
 						</tr>
@@ -183,7 +175,10 @@ body {
 			</td>
 		</tr>
 	</table>
-				
+		
+
+
+
 <div style="font-size: 10px;">
 	<p>US Albers projected shapefile retrieved from <a href=https://github.com/topojson/us-atlas>"https://github.com/topojson/us-atlas"</a> on October 13, 2020. This shape file is one of many pre-projected shapefiles from the US Census Beueau's cartographic boundary shapefiles.</p>
 	<p>Data on the number of known Coronavirus cases by county and county population data retrieved from <a href="https://usafacts.org/visualizations/coronavirus-covid-19-spread-map/">"usafacts.org"</a> on October 13, 2020. Data used was the total number of known cases from January 22, 2020 - October 1, 2020.</p>

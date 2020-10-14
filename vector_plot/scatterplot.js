@@ -1,7 +1,7 @@
 
 
 // set the dimensions and margins of the graph
-var margin_scatter = {top: 50, right: 20, bottom: 60, left: 40},
+var margin_scatter = {top: 10, right: 20, bottom: 60, left: 40},
     width_scatter = 450 - margin_scatter.left - margin_scatter.right,
     height_scatter = 300 - margin_scatter.top - margin_scatter.bottom;
 
@@ -22,13 +22,7 @@ svg2
     .attr("width", width_scatter)
     .style("fill", "EBEBEB")
 
-svg2.append("text")
-    .attr("x", (width_scatter / 2))             
-    .attr("y", 0 - (margin_scatter.top / 2))
-    .attr("text-anchor", "middle")  
-    .style("font-size", "14px") 
-    .style("text-decoration", "underline")  
-    .text("County Size vs Cases per Capita");
+
 
 //Read the data
 d3.csv("https://raw.githubusercontent.com/hannahjordanUM/Data_Vis_Repo/master/VectorPlot/covid_case_scatter.csv", function(data) {
@@ -57,10 +51,10 @@ d3.csv("https://raw.githubusercontent.com/hannahjordanUM/Data_Vis_Repo/master/Ve
     .attr("dy", "1em")
     .style("text-anchor", "middle")
     .style("font-size","12px")
-    .text("Confirmed Cases/County (%)");
+    .text("Confirmed Cases/Capita (%)");
 
     svg2.append("text")
-    .attr("y", (width_scatter/2) + 10)
+    .attr("y", (width_scatter/2) + 55)
     .attr("x", width_scatter/2)
     .attr("dy", "1em")
     .style("text-anchor", "middle")
