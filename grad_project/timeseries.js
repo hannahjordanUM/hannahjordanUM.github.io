@@ -26,7 +26,7 @@ svgT
     .attr("text-anchor", "middle")  
     .style("font-size", "16px") 
     .style("text-decoration", "bold")  
-    .text("Total Number of Earthquakes (Magnitude 2.5 or greater) Per Year");
+    .text("Total Number of Earthquakes (magnitude 2.5 or greater) Per Year");
  
 
 //Read the data

@@ -113,7 +113,7 @@ d3.csv("https://raw.githubusercontent.com/hannahjordanUM/Data_Vis_Repo/master/gr
       .attr("dy", "1em")
       .style("text-anchor", "middle")
       .style("font-size","12px")
-      .text("Magnitude (Scale from 0-10");
+      .text("Magnitude (See Table)");
 
 
       

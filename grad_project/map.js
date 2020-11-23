@@ -58,7 +58,7 @@ var eqOverlay = L.d3SvgOverlay(function(sel,proj){
     .attr('cy',function(d){return proj.latLngToLayerPoint(d.latLng).y;})
     .attr('stroke','black')
     .attr('stroke-width',1)
-    .attr('opacity',0.9)
+    //.attr('opacity',0.9)
     .attr('fill',function(d){ return getFill(d.mag) ;});
 });
 
