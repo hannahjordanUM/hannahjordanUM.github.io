@@ -1,0 +1,109 @@
+<!--
+  TODO:
+    mess with colors
+    finalize legend
+    add tooltips
+  -->
+
+<!DOCTYPE html>
+<html>
+<head>
+
+
+  <!-- Load Leaflet from CDN -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+    integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+    crossorigin=""/>
+  <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+    integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+    crossorigin=""></script>
+
+  <!-- Load Esri Leaflet from CDN -->
+  <script src="https://unpkg.com/esri-leaflet@2.5.0/dist/esri-leaflet.js"
+    integrity="sha512-ucw7Grpc+iEQZa711gcjgMBnmd9qju1CICsRaryvX7HJklK0pGl/prxKvtHwpgm5ZHdvAil7YPxI1oWPOWK3UQ=="
+    crossorigin=""></script>
+
+
+
+    
+</head>
+
+<style>
+
+#eq {
+  border-collapse: collapse;
+}
+
+#eq td, #eq tr {
+  border: 1px solid;
+
+}
+
+</style>
+
+<body>
+
+<div style="font-family:Arial;">The Yellowstone Hotspot is a 16 million year old volcano that currently sits beneath Yellowstone National Park. In the last 2.1 million years, there have been 3 major eruptions, forming three calderas, most recent being the Yellowstone caldera formed 640,000 years ago. These eruptions helped to create the topography of the western United States, and contributes to Yellowstone's incredible scenery, geology and hydrothermal features.Within the area of Yellowstone, there are approximately 700 to 3,000 earthquakes each year, most of which cannot be felt. This is because of the extensive network of faults associated with the Yellowstone volcano and the surrounding tectonic features.</div>
+<div style="text-align:center;">
+  <h2>Do earthquakes occur along the youngest Yellowstone caldera? Have the number of earthquakes in the park increased over time?</h2>
+  <h4>Hypothesis: The number of earthquakes per year in Yellowstone National Park and the surrounding area has increased over time, and the location of earthquakes surrounds the caldera.</h4>
+</div>
+
+
+  <table style="width: 100%;">
+    <tr>
+      <td style="vertical-align: top; ">
+        <p style="font-size: 16px; text-decoration: bold; text-align: center;">Distribution of all Earthquakes in Yellowstone National Park during 2019</p>
+        <div id="map" style="width: 600px; height: 600px"></div>
+        <p style="font-size: 12px;">The Yellowstone Caldera is outlined in red. This is the most recently formed caldera, others have been omitted. The Sour Creek and Mallard Lake Resurgent domes are outlined in green. These domes form when magma rises to the shallow levels beneath a caldera and slowly reinflate the previously deflated magma resevoir, pushing the ground upwards to form a dome.</p>
+      </td>
+      <td style="vertical-align: middle; ">
+        <div>
+        <img src="map_legend.png" alt="map legend" style="width:200px; ">
+        <img src="mag_legend.png" alt="earthquake legend" style="width:200px; ">
+        <br/>
+        <br/>
+        <img src="table.png" alt="table legend" style="width:200px; ">
+        </div>
+      </td>
+      <td style="vertical-align: top; ">
+        <div id="scatterplot"></div>
+        <div id="timeseries"></div>
+
+      </td>
+    </tr>
+
+  </table>
+
+<table style="width:100%">
+  <tr>
+    <td>
+
+<p style="font-size:10px">Earthquake Data retreived from USGS Earthquake Search Catalog, <a href="https://earthquake.usgs.gov/earthquakes/search/">https://earthquake.usgs.gov/earthquakes/search/</a>, on November 22, 2020.</p>
+<p style="font-size:10px">Yellowstone National Park boundary, Caldera boundaries and fault lines retreived from Wyoming State Geological Survey website, <a href="https://www.wsgs.wyo.gov/pubs-maps/gis">https://www.wsgs.wyo.gov/pubs-maps/gis</a>, on November 22, 2020.</p>
+<p style="font-size:10px">Information and dates on the Yellowstone volcano retreived from, <a href="https://www.nps.gov/yell/learn/nature/earthquakes.htm">https://www.nps.gov/yell/learn/nature/earthquakes.htm</a> and <a href="https://www.nps.gov/yell/learn/nature/volcano.htm">https://www.nps.gov/yell/learn/nature/volcano.htm</a>, on November 22, 2020.</p>
+<p style="font-size:10px">Earthquake Magnitude scale informaiton retreived from, <a href="https://pubs.usgs.gov/fs/fs100-03/">https://pubs.usgs.gov/fs/fs100-03/</a>, on November 22, 2020.</p>
+
+</td>
+</tr>
+</table>
+
+</body>
+
+  
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.4.9/d3.min.js"></script>
+<script src="L.D3SvgOverlay.min.js"></script>
+<script type="text/javascript" src="cal.js"></script>
+<script type="text/javascript" src="boundary.js"></script>
+<script type="text/javascript" src="faults.js"></script>
+<script type="text/javascript" src="map.js"></script>
+
+<script src="https://d3js.org/d3.v4.js"></script>
+
+<script type="text/javascript" src="scatterplot.js"></script>
+<script type="text/javascript" src="timeseries.js"></script>
+<script type="text/javascript" src="bar_chart.js"></script>
+
+
+
+</html>
